@@ -1,0 +1,6 @@
+# emitted / built artifacts
+*.go
+/hello/hello
+/reject-nil/reject
+/struct-fields/fields
+/flow-ok/flow

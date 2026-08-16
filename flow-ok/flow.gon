@@ -1,0 +1,11 @@
+// flow-ok — v1 is not flow-sensitive: non-literal assignment is allowed.
+package main
+
+func get() *string {
+	return nil // runtime nil is fine; Gon does not track it
+}
+
+func main() {
+	var x !*string = get() // allowed in v1.0 — not a diagnostic
+	_ = x
+}

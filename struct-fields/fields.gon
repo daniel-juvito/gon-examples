@@ -1,0 +1,12 @@
+// struct-fields — required !T field must be set; nil is rejected.
+package main
+
+type Config struct {
+	Name !*string
+	Port int
+}
+
+func main() {
+	_ = Config{}          // GN002: missing required field Name
+	_ = Config{Name: nil} // GN001: nil into ! field
+}

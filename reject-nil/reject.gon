@@ -1,0 +1,8 @@
+// reject-nil — literal nil into !T must fail with GN001.
+package main
+
+func greet(msg !*string) {}
+
+func main() {
+	greet(nil) // GN001
+}

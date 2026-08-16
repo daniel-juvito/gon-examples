@@ -1,0 +1,29 @@
+// hello — minimal Gon program with !T params, returns, and fields.
+package main
+
+import "fmt"
+
+// Config requires a non-nil Name.
+type Config struct {
+	Name !*string
+	Port int
+}
+
+// greet demands a non-nil message.
+func greet(msg !*string) {
+	fmt.Println("hello,", *msg)
+}
+
+// loadConfig builds a valid Config.
+// Returning !*Config is a local contract: literal nil would be GN001.
+func loadConfig(name !*string) !*Config {
+	return &Config{Name: name, Port: 8080}
+}
+
+func main() {
+	app := "gon"
+	greet(&app)
+
+	cfg := loadConfig(&app)
+	fmt.Printf("running %s on :%d\n", *cfg.Name, cfg.Port)
+}
