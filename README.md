@@ -30,9 +30,20 @@ gon check hello/hello.gon
 # emit clean Go next to the source
 gon transpile hello/hello.gon
 
-# transpile + go build
-gon build hello/hello.gon
+# build from inside the example dir (binary name matches the stem)
+cd hello
+gon build hello.gon
 ./hello
+# hello, gon
+# running gon on :8080
+```
+
+Negative examples:
+
+```bash
+gon check reject-nil/reject.gon      # GN001, exit 1
+gon check struct-fields/fields.gon   # GN001 + GN002, exit 1
+gon check flow-ok/flow.gon           # ok — non-guarantee of v1
 ```
 
 ## Docs
