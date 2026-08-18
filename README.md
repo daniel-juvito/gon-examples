@@ -9,7 +9,7 @@ Gon adds `!T` type modifiers so you can express non-nil contracts at **vet time*
 ## Install Gon
 
 ```bash
-go install github.com/daniel-juvito/gon/cmd/gon@v1.2.0
+go install github.com/daniel-juvito/gon/cmd/gon@v1.2.1
 ```
 
 ## Examples
@@ -20,7 +20,7 @@ go install github.com/daniel-juvito/gon/cmd/gon@v1.2.0
 | [`reject-nil/`](reject-nil/) | v1.0 | GN001 when literal `nil` is passed to `!T` |
 | [`struct-fields/`](struct-fields/) | v1.0 | GN002 when a required `!T` field is missing |
 | [`flow-ok/`](flow-ok/) | v1.0 | Non-literal assignment is allowed (not flow-sensitive) |
-| [`return-value/`](return-value/) | **v1.1** | Annotated `!T` result is a non-nil source (GW001) |
+| [`return-value/`](return-value/) | **v1.1** | Annotated `!T` result is a non-nil source (GW001); local multi-return |
 | [`field-contracts/`](field-contracts/) | **v1.2** | Field invariant: construction, mutation, selector; indirection stops |
 
 ## Quick start
@@ -53,7 +53,7 @@ gon check field-contracts/fields.gon      # GN002 + GN001 + GW001, exit 1
 ## Docs
 
 - [Gon README](https://github.com/daniel-juvito/gon)
-- [v1 scope](https://github.com/daniel-juvito/gon/blob/v1.2.0/docs/v1-scope.md)
-- [.gna spec](https://github.com/daniel-juvito/gon/blob/v1.2.0/docs/gna-spec-v1.md)
-- [Return-value contracts (v1.1)](https://github.com/daniel-juvito/gon/blob/v1.2.0/docs/rfc-return-value-contracts.md)
-- [Field contracts (v1.2)](https://github.com/daniel-juvito/gon/blob/v1.2.0/docs/rfc-field-contracts.md)
+- [v1 scope](https://github.com/daniel-juvito/gon/blob/v1.2.1/docs/v1-scope.md)
+- [.gna spec](https://github.com/daniel-juvito/gon/blob/v1.2.1/docs/gna-spec-v1.md)
+- [Return-value contracts (v1.1)](https://github.com/daniel-juvito/gon/blob/v1.2.1/docs/rfc-return-value-contracts.md)
+- [Field contracts (v1.2)](https://github.com/daniel-juvito/gon/blob/v1.2.1/docs/rfc-field-contracts.md)
