@@ -1,0 +1,49 @@
+// field-contracts — v1.2: !T field is a storage invariant.
+// Construction → GN002; mutation of nil → GN001; selector → non-nil source.
+package main
+
+type Client struct{}
+
+type Config struct {
+	Client !*Client
+}
+
+// Embedded and array containment are traversed for zero-value checks.
+type Wrapper struct {
+	Config
+}
+
+type Boxed struct {
+	Items [2]Config
+}
+
+// Indirection: zero value does not contain the pointed-to / element value.
+type Indirect struct {
+	Ptr   *Config
+	Slice []Config
+}
+
+func main() {
+	// --- Construction (GN002) ---
+	var _ Config // GN002: Client at zero
+	_ = Config{} // GN002
+	_ = Wrapper{} // GN002 via embedded Config.Client
+	_ = Boxed{}   // GN002 via Items[i].Client
+
+	// OK construction
+	c := &Client{}
+	cfg := Config{Client: c}
+
+	// --- Mutation (GN001) ---
+	cfg.Client = nil // GN001: explicit nil into ! field
+	// ordinary values remain accepted (conservative); not shown
+
+	// --- Selector as non-nil source (GW001) ---
+	ok := Config{Client: c}
+	if ok.Client == nil { // GW001
+	}
+	_ = ok.Client
+
+	// --- Indirection: no GN002 ---
+	_ = Indirect{} // accepted — Ptr/Slice zero is nil, not traversed
+}
