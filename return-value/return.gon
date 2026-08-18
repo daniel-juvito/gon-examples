@@ -7,6 +7,12 @@ func MustName() !*string {
 	return &s
 }
 
+// Open: only result[0] is non-nil (local multi-return contract).
+func Open() (!*string, error) {
+	s := "cfg"
+	return &s, nil
+}
+
 func main() {
 	// Short declaration: MustName result promotes name to non-nil source.
 	name := MustName()
@@ -17,12 +23,17 @@ func main() {
 	var n = MustName()
 	_ = n
 
+	// Multi-return: only the annotated position is a non-nil source.
+	f, err := Open()
+	_ = err
+	if f == nil { // GW001
+	}
+
 	// Explicit type on the binding is non-nil from the type itself.
 	var explicit !*string = MustName()
 	_ = explicit
 
 	// Conversion does not propagate source-ness (v1.1 boundary).
-	// converted := (*string)(name); if converted == nil {} → no GW001
 	converted := (*string)(name)
 	_ = converted
 }
