@@ -1,0 +1,17 @@
+// cli — v1.3 tooling demo: fmt preserves !, check / vet.
+package main
+
+type  Config  struct {
+	Name !*string
+	Port int
+}
+
+func load(name !*string) !*Config {
+	return &Config{ Name:name, Port: 8080 }
+}
+
+func main() {
+	app:="gon"
+	cfg := load(&app)
+	_ = cfg
+}

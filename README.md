@@ -23,6 +23,7 @@ go install github.com/daniel-juvito/gon/cmd/gon@v1.3.0
 | [`return-value/`](return-value/) | **v1.1** | Annotated `!T` result is a non-nil source (GW001); local multi-return |
 | [`field-contracts/`](field-contracts/) | **v1.2** | Field invariant: construction, mutation, selector; indirection stops |
 | [`construction/`](construction/) | **v1.3** | `new(T)`, unkeyed local literals, nested walk; stop at indirection |
+| [`cli/`](cli/) | **v1.3** | `gon fmt` preserves `!`; `check` / `vet` alias |
 
 ## Quick start
 
@@ -50,6 +51,7 @@ gon check flow-ok/flow.gon                # ok — non-guarantee of v1
 gon check return-value/return.gon         # GW001 warnings, exit 0
 gon check field-contracts/fields.gon      # GN002 + GN001 + GW001, exit 1
 gon check construction/construction.gon  # GN002 (new/unkeyed/nested), exit 1
+gon fmt cli/demo.gon && gon check cli/demo.gon  # fmt preserves !; ok
 ```
 
 ## Docs
