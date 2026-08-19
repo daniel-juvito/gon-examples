@@ -1,0 +1,30 @@
+// construction — v1.3 M2a: new(T), unkeyed literals, nested/local-only.
+// External SelectorExpr types stay keyed-only (M4 firewall); not shown here.
+package main
+
+type Inner struct {
+	X !*int
+}
+
+type Outer struct {
+	Name !*string
+	In   Inner
+}
+
+func main() {
+	// --- new(T) is a zero-value construction site (GN002) ---
+	_ = new(Outer) // GN002: Outer.Name and Outer.In.X missing
+
+	// --- Unkeyed: declaration-order mapping (local named struct only) ---
+	n := "gon"
+	x := 1
+	_ = Outer{&n, Inner{&x}} // ok — Name, In in declaration order
+	_ = Outer{}              // GN002: missing Name (and nested In.X)
+
+	// --- Nested zero walk stops at pointer / slice (indirection) ---
+	type Hold struct {
+		P *Outer
+		S []Outer
+	}
+	_ = Hold{} // ok — not traversed past * / []
+}
