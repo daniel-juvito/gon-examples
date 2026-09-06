@@ -1,0 +1,18 @@
+schema: 1
+package: gonexample.local/ecosystem/store
+description: "Contracts for the demo store package"
+
+functions:
+  Connect:
+    results:
+      - "!*Conn"
+  Open:
+    results:
+      - "!io.Reader"
+
+types:
+  Conn:
+    fields:
+      DB:  "!*DB"
+      Log: "!*Logger"
+      W:   "!io.Writer"
