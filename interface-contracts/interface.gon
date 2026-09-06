@@ -48,7 +48,7 @@ func main() {
 	src := mkReader()
 	var e !Reader = src // OK
 	_ = e
-	if src == nil {     // GW001 — src is a non-nil source (D4)
+	if src == nil { // GW001 — src is a non-nil source (D4)
 	}
 
 	// --- D3d / §3.7: embedding does not propagate ! ---

@@ -9,7 +9,7 @@ Gon adds `!T` type modifiers so you can express non-nil contracts at **vet time*
 ## Install Gon
 
 ```bash
-go install github.com/daniel-juvito/gon/cmd/gon@v1.4.0
+go install github.com/daniel-juvito/gon/cmd/gon@v1.4.1
 ```
 
 ## Examples
@@ -59,8 +59,8 @@ gon fmt cli/demo.gon && gon check cli/demo.gon  # fmt preserves !; ok
 ## Docs
 
 - [Gon README](https://github.com/daniel-juvito/gon)
-- [v1 scope](https://github.com/daniel-juvito/gon/blob/v1.4.0/docs/v1-scope.md)
-- [.gna spec](https://github.com/daniel-juvito/gon/blob/v1.4.0/docs/gna-spec-v1.md)
-- [Return-value contracts (v1.1)](https://github.com/daniel-juvito/gon/blob/v1.4.0/docs/rfc-return-value-contracts.md)
-- [Field contracts (v1.2)](https://github.com/daniel-juvito/gon/blob/v1.4.0/docs/rfc-field-contracts.md)
-- [Interface semantics (v1.4)](https://github.com/daniel-juvito/gon/blob/v1.4.0/docs/rfc-interface-semantics.md)
+- [v1 scope](https://github.com/daniel-juvito/gon/blob/v1.4.1/docs/v1-scope.md)
+- [.gna spec](https://github.com/daniel-juvito/gon/blob/v1.4.1/docs/gna-spec-v1.md)
+- [Return-value contracts (v1.1)](https://github.com/daniel-juvito/gon/blob/v1.4.1/docs/rfc-return-value-contracts.md)
+- [Field contracts (v1.2)](https://github.com/daniel-juvito/gon/blob/v1.4.1/docs/rfc-field-contracts.md)
+- [Interface semantics (v1.4)](https://github.com/daniel-juvito/gon/blob/v1.4.1/docs/rfc-interface-semantics.md)

@@ -34,10 +34,7 @@ Not shown (out of scope, by design):
 - Any check on the interface's **dynamic value** — `!I` never constrains it.
 - `x.(!*T)` (a `!` on a *concrete* assertion target) — left for a later RFC.
 
-> **Note:** run `gon check` on this file, not `gon fmt`. As of v1.4.0,
-> `gon fmt`'s `!` re-insertion misaligns when one interface type is written
-> both as `!I` and `I` in the same file (which the D3b cases here require).
+Spec: [rfc-interface-semantics.md](https://github.com/daniel-juvito/gon/blob/v1.4.1/docs/rfc-interface-semantics.md)
 
-Spec: [rfc-interface-semantics.md](https://github.com/daniel-juvito/gon/blob/v1.4.0/docs/rfc-interface-semantics.md)
-
-Requires Gon **v1.4.0+**.
+Requires Gon **v1.4.1+** (v1.4.0 checks this file correctly, but its
+`gon fmt` mis-aligns `!` on files that use a type as both `!I` and `I`).
