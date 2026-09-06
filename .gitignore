@@ -1,6 +1,9 @@
 # emitted / built artifacts
 *.go
+# ...except real source in module examples
+!ecosystem-contracts/store/store.go
 /hello/hello
 /reject-nil/reject
 /struct-fields/fields
 /flow-ok/flow
+/ecosystem-contracts/ecosystem

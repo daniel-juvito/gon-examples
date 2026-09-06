@@ -1,0 +1,49 @@
+// ecosystem-contracts — v1.5 (M4a + M4b): external .gna `types:` field
+// contracts and interface results are enforced across the package boundary.
+package main
+
+import (
+	"bytes"
+	"io"
+
+	"gonexample.local/ecosystem/store"
+)
+
+func ordinaryWriter() io.Writer { return nil }
+
+func main() {
+	db := &store.DB{}
+	lg := &store.Logger{}
+	buf := &bytes.Buffer{}
+
+	// --- M4a: construction (GN002 — missing required ! fields) ---
+	_ = store.Conn{DB: db} // GN002 ×2 — Log, W missing
+	_ = new(store.Conn)    // GN002 ×3 — zero-value site
+	_ = &store.Conn{}      // GN002 ×3
+
+	// --- M4a: explicit nil into a ! field (GN001) ---
+	_ = store.Conn{DB: db, Log: nil, W: buf} // GN001 — Log: nil
+
+	// --- M4b: ordinary interface value into a !io.Writer field (GN001) ---
+	_ = store.Conn{DB: db, Log: lg, W: ordinaryWriter()} // GN001 — D3b
+
+	// --- OK: every ! field satisfied (concrete W, even typed-nil, is fine) ---
+	c := store.Conn{DB: db, Log: lg, W: buf}
+
+	// --- M4a: mutation + use of an external ! field ---
+	c.DB = nil        // GN001 — cannot nil a ! field
+	if c.Log == nil { // GW001 — c.Log is a non-nil source
+	}
+
+	// --- M4b: annotated interface result is a non-nil source ---
+	r := store.Open()
+	if r == nil { // GW001 — r is non-nil
+	}
+	var _ !io.Reader = store.Open() // OK — !I result satisfies !I
+
+	// --- annotated pointer result is a non-nil source ---
+	conn := store.Connect()
+	if conn == nil { // GW001
+	}
+	_ = conn
+}
