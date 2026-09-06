@@ -1,0 +1,67 @@
+// interface-contracts — v1.4 (M1a): !I is an *interface-value* non-nil
+// contract. It never constrains the interface's dynamic value.
+package main
+
+type Reader interface{ Read() }
+
+type ReadCloser interface {
+	Reader
+	Close()
+}
+
+// File implements Reader/ReadCloser with a pointer receiver.
+type File struct{}
+
+func (f *File) Read()  {}
+func (f *File) Close() {}
+
+// mkReader is a local !Reader contract: the returned interface value is
+// guaranteed non-nil (its dynamic value is not constrained).
+func mkReader() !Reader {
+	var f File
+	return &f
+}
+
+// ordinary returns a plain Reader — no contract.
+func ordinary() Reader { return nil }
+
+func main() {
+	// --- D3a: concrete → !I, even typed-nil ---
+	var p *File = nil
+	var a !Reader = p // OK — the interface value is non-nil; dynamic value nil is fine
+	_ = a
+
+	// --- D3b: ordinary interface value → !I is rejected, unconditionally ---
+	r := ordinary()
+	var b !Reader = r // GN001
+	_ = b
+	if r != nil {
+		var c !Reader = r // GN001 — a nil check does not narrow (no flow analysis)
+		_ = c
+	}
+
+	// --- D3c: nil literal → !I ---
+	var d !Reader = nil // GN001
+	_ = d
+
+	// --- D3d: an existing !I source of the same type satisfies !I ---
+	src := mkReader()
+	var e !Reader = src // OK
+	_ = e
+	if src == nil { // GW001 — src is a non-nil source (D4)
+	}
+
+	// --- D3d / §3.7: embedding does not propagate ! ---
+	var rc !ReadCloser = &File{}
+	var g !Reader = rc // GN001 — !ReadCloser is not a !Reader source
+	_ = g
+
+	// --- D6c: an explicit conversion yields an ordinary interface ---
+	var h !Reader = Reader(p) // GN001 — Reader(p) has interface static type
+	_ = h
+
+	// --- D6a: !I is not a type-assertion target ---
+	var box any = &File{}
+	k := box.(!Reader) // GN001 — assertions do not establish !I
+	_ = k
+}

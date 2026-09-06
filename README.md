@@ -9,7 +9,7 @@ Gon adds `!T` type modifiers so you can express non-nil contracts at **vet time*
 ## Install Gon
 
 ```bash
-go install github.com/daniel-juvito/gon/cmd/gon@v1.3.0
+go install github.com/daniel-juvito/gon/cmd/gon@v1.4.1
 ```
 
 ## Examples
@@ -24,6 +24,7 @@ go install github.com/daniel-juvito/gon/cmd/gon@v1.3.0
 | [`field-contracts/`](field-contracts/) | **v1.2** | Field invariant: construction, mutation, selector; indirection stops |
 | [`construction/`](construction/) | **v1.3** | `new(T)`, unkeyed local literals, nested walk; stop at indirection |
 | [`cli/`](cli/) | **v1.3** | `gon fmt` preserves `!`; `check` / `vet` alias |
+| [`interface-contracts/`](interface-contracts/) | **v1.4** | `!I` is interface-value non-nil only; typed-nil ok, ordinary `I` rejected, embedding does not propagate |
 
 ## Quick start
 
@@ -51,13 +52,15 @@ gon check flow-ok/flow.gon                # ok — non-guarantee of v1
 gon check return-value/return.gon         # GW001 warnings, exit 0
 gon check field-contracts/fields.gon      # GN002 + GN001 + GW001, exit 1
 gon check construction/construction.gon  # GN002 (new/unkeyed/nested), exit 1
+gon check interface-contracts/interface.gon  # GN001 ×6 + GW001, exit 1
 gon fmt cli/demo.gon && gon check cli/demo.gon  # fmt preserves !; ok
 ```
 
 ## Docs
 
 - [Gon README](https://github.com/daniel-juvito/gon)
-- [v1 scope](https://github.com/daniel-juvito/gon/blob/v1.3.0/docs/v1-scope.md)
-- [.gna spec](https://github.com/daniel-juvito/gon/blob/v1.3.0/docs/gna-spec-v1.md)
-- [Return-value contracts (v1.1)](https://github.com/daniel-juvito/gon/blob/v1.3.0/docs/rfc-return-value-contracts.md)
-- [Field contracts (v1.2)](https://github.com/daniel-juvito/gon/blob/v1.3.0/docs/rfc-field-contracts.md)
+- [v1 scope](https://github.com/daniel-juvito/gon/blob/v1.4.1/docs/v1-scope.md)
+- [.gna spec](https://github.com/daniel-juvito/gon/blob/v1.4.1/docs/gna-spec-v1.md)
+- [Return-value contracts (v1.1)](https://github.com/daniel-juvito/gon/blob/v1.4.1/docs/rfc-return-value-contracts.md)
+- [Field contracts (v1.2)](https://github.com/daniel-juvito/gon/blob/v1.4.1/docs/rfc-field-contracts.md)
+- [Interface semantics (v1.4)](https://github.com/daniel-juvito/gon/blob/v1.4.1/docs/rfc-interface-semantics.md)
