@@ -1,0 +1,63 @@
+// type-coverage — v1.6 (M1b): `!` has one uniform meaning across every
+// nilable Go kind. `![]T`, `!map`, `!chan`, `!func` (and named types /
+// aliases of them) guarantee the *reference value* is non-nil — never a
+// length, emptiness, or channel-state claim.
+package main
+
+type Handler func()
+
+type Bytes = []byte // alias — identical to []byte
+
+type Registry struct {
+	routes !map[string]Handler // direct ! field of a reference kind
+}
+
+// DefaultHandlers returns a non-nil (possibly empty) slice — an annotated
+// !result is a non-nil source at the call site.
+func DefaultHandlers() ![]Handler { return []Handler{} }
+
+func main() {
+	// --- C5: a bare `var x !S` of a nilable kind has no initializer ---
+	var s ![]byte             // GN002 — zero value of ![]byte is nil
+	var m !map[string]int     // GN002
+	var fn !Handler           // GN002 — named func type
+	var b !Bytes              // GN002 — alias follows []byte
+	_, _, _, _ = s, m, fn, b
+
+	// ...with a non-nil initializer, accepted (empty is fine — C2):
+	ok1 := make([]byte, 0)
+	var ok2 ![]byte = ok1
+	var ok3 !map[string]int = map[string]int{}
+	_, _ = ok2, ok3
+
+	// --- C3: the nil literal never satisfies a ! reference contract ---
+	var bad ![]byte = nil // GN001
+	_ = bad
+
+	// --- C8: an annotated ![]T result is a non-nil source ---
+	hs := DefaultHandlers()
+	if hs == nil { // GW001 — always false
+	}
+
+	// --- C6: append / reslice / conversion do not propagate ! ---
+	grown := append(hs, func() {})
+	if grown == nil { // no GW001 — `grown` is an ordinary slice
+	}
+
+	// --- C11: a ! reference field — construction, mutation, use ---
+	_ = Registry{}                                   // GN002 — routes is nil
+	r := Registry{routes: map[string]Handler{}}      // OK
+	r.routes = nil                                   // GN001
+	if r.routes == nil {                             // GW001 — selector is a source
+	}
+
+	// --- C7: `!` on any type-assertion target is rejected ---
+	var box any = []byte{}
+	v := box.(![]byte) // GN001 — assertions do not establish a non-nil guarantee
+	_ = v
+
+	// --- O4: `!` is meaningless on a non-nilable kind ---
+	type Point struct{ X, Y int }
+	var p !Point // GN003 — ! applies only to pointer/slice/map/chan/func/interface
+	_ = p
+}
