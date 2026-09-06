@@ -19,6 +19,9 @@ Shows:
 Not shown (still deferred):
 
 - External / `SelectorExpr` unkeyed mapping (**M4 firewall** — keyed + `.gna` only)
-- Interface `!I`, type coverage, flow-sensitive nilability
+- Type coverage, generics, flow-sensitive nilability
+
+Interface `!I` semantics landed in v1.4 — see
+[`interface-contracts/`](../interface-contracts/).
 
 Requires Gon **v1.3.0+**.
