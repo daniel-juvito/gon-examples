@@ -40,7 +40,8 @@ Shows:
 
 Not shown (out of scope, by design):
 
-- Element-position contracts (`[]!T`, `map[K]!V`) — reserved for M2b (v1.7).
+- Element-position contracts (`[]!T`, `map[K]!V`) — delivered in v1.7 (M2b);
+  see [`element-contracts/`](../element-contracts/).
 - Any length / non-emptiness / channel open-state claim — `!` is nilability
   only.
 

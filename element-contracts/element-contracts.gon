@@ -1,0 +1,64 @@
+// element-contracts — v1.7 (M2b): `!` in element / value position
+// (`[]!*T`, `[N]!*T`, `map[K]!*V`, `[]!I`) is a *construction-time*
+// obligation. Every explicitly written element of a composite literal —
+// and every zero-filled index of a fixed array — must be non-nil at the
+// construction site. It is not a lifetime invariant of the container.
+package main
+
+type T struct{}
+
+type Handler interface{ Serve() }
+
+func mk() *T    { return &T{} }
+func maybe() *T { return nil } // ordinary — the value may be nil
+
+// NewHandlers: the slice itself is non-nil (outer `!`) and every written
+// element is non-nil (element `!`). Both hold — clean.
+func NewHandlers() ![]!*T { return []!*T{mk(), mk()} }
+
+func main() {
+	// --- E4: an explicit nil element / map value is GN001 ---
+	_ = []!*T{mk(), nil}         // GN001 — element 2 is the nil literal
+	_ = map[string]!*T{"a": nil} // GN001 — map value
+
+	// ...an ordinary expression is accepted even if it may be nil (C4):
+	_ = []!*T{mk(), maybe()} // OK — maybe() is not the nil literal
+
+	// non-nil is not non-empty — an empty element literal is fine:
+	_ = []!*T{}          // OK
+	_ = map[string]!*T{} // OK
+
+	// --- E5: a fixed array leaves uncovered indices at their zero value ---
+	var a [3]!*T = [3]!*T{mk()}                      // GN002 — indices 1,2 zero-filled
+	var b [3]!*T = [3]!*T{2: mk()}                   // GN002 — indices 0,1 zero-filled
+	var c [3]!*T = [3]!*T{0: mk(), 1: mk(), 2: mk()} // OK — every index covered
+	d := [...]!*T{mk()}                             // OK — inferred length 1, no shortfall
+	_, _, _, _ = a, b, c, d
+
+	// --- E6: outer and element contracts are independent ---
+	var s ![]!*T = nil       // GN001 — outer (the slice header itself)
+	var t ![]!*T = []!*T{}    // OK — outer satisfied by the literal, no elements
+	var u ![]!*T = []!*T{nil} // GN001 — element
+	var z ![]!*T             // GN002 — outer zero value (the v1.6 rule)
+	_, _, _, _ = s, t, u, z
+
+	// --- E12: an interface element follows the v1.4 interface-value rule ---
+	_ = []!Handler{nil} // GN001 — the interface value is nil
+
+	// --- E11 / O1 / O4: a malformed element `!` is GN003 ---
+	var ch chan !*T      // GN003 — channel elements have no construction site
+	var keys map[!*T]int // GN003 — map key contracts are not supported in v1
+	var ints []!int      // GN003 — int is not a nilable kind
+	_, _, _ = ch, keys, ints
+
+	// --- Non-goals: lifetime is not tracked past the construction site ---
+	ok := []!*T{mk()}
+	ok[0] = nil          // no diagnostic — later mutation is ordinary Go
+	ok = append(ok, nil) // no diagnostic
+	for _, p := range ok {
+		_ = p // p is an ordinary *T
+	}
+	_ = ok
+
+	_ = NewHandlers()
+}
