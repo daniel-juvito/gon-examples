@@ -9,7 +9,7 @@ Gon adds `!T` type modifiers so you can express non-nil contracts at **vet time*
 ## Install Gon
 
 ```bash
-go install github.com/daniel-juvito/gon/cmd/gon@v1.6.0
+go install github.com/daniel-juvito/gon/cmd/gon@v1.7.0
 ```
 
 ## Examples
@@ -27,6 +27,7 @@ go install github.com/daniel-juvito/gon/cmd/gon@v1.6.0
 | [`interface-contracts/`](interface-contracts/) | **v1.4** | `!I` is interface-value non-nil only; typed-nil ok, ordinary `I` rejected, embedding does not propagate |
 | [`ecosystem-contracts/`](ecosystem-contracts/) | **v1.5** | external `.gna` `types:` field contracts across the package boundary (construction / mutation / use); interface results; `.gna` validation (GN003 / GW004) |
 | [`type-coverage/`](type-coverage/) | **v1.6** | `!` on slice / map / chan / func / named / alias means the reference value is non-nil; bare `var x !S` needs an initializer (GN002); `x.(!T)` → GN001; `!` on a non-nilable kind → GN003 |
+| [`element-contracts/`](element-contracts/) | **v1.7** | element `!` (`[]!*T`, `[N]!*T`, `map[K]!*V`, `[]!I`) checked at the composite-literal site: nil element → GN001, fixed-array zero-fill → GN002, `!` on chan element / map key / non-nilable kind → GN003; construction-time only |
 
 ## Quick start
 
@@ -57,16 +58,18 @@ gon check construction/construction.gon  # GN002 (new/unkeyed/nested), exit 1
 gon check interface-contracts/interface.gon  # GN001 ×6 + GW001, exit 1
 (cd ecosystem-contracts && gon check demo.gon) # GN002/GN001 + GW001, exit 1
 gon check type-coverage/type-coverage.gon  # GN002/GN001/GN003 + GW001, exit 1
+gon check element-contracts/element-contracts.gon  # 5×GN001 + 3×GN002 + 3×GN003, exit 1
 gon fmt cli/demo.gon && gon check cli/demo.gon  # fmt preserves !; ok
 ```
 
 ## Docs
 
 - [Gon README](https://github.com/daniel-juvito/gon)
-- [v1 scope](https://github.com/daniel-juvito/gon/blob/v1.6.0/docs/v1-scope.md)
-- [.gna spec](https://github.com/daniel-juvito/gon/blob/v1.6.0/docs/gna-spec-v1.md)
-- [Return-value contracts (v1.1)](https://github.com/daniel-juvito/gon/blob/v1.6.0/docs/rfc-return-value-contracts.md)
-- [Field contracts (v1.2)](https://github.com/daniel-juvito/gon/blob/v1.6.0/docs/rfc-field-contracts.md)
-- [Interface semantics (v1.4)](https://github.com/daniel-juvito/gon/blob/v1.6.0/docs/rfc-interface-semantics.md)
-- [Ecosystem contract expansion (v1.5)](https://github.com/daniel-juvito/gon/blob/v1.6.0/docs/rfc-ecosystem-contract-expansion.md)
-- [Type coverage (v1.6)](https://github.com/daniel-juvito/gon/blob/v1.6.0/docs/rfc-type-coverage.md)
+- [v1 scope](https://github.com/daniel-juvito/gon/blob/v1.7.0/docs/v1-scope.md)
+- [.gna spec](https://github.com/daniel-juvito/gon/blob/v1.7.0/docs/gna-spec-v1.md)
+- [Return-value contracts (v1.1)](https://github.com/daniel-juvito/gon/blob/v1.7.0/docs/rfc-return-value-contracts.md)
+- [Field contracts (v1.2)](https://github.com/daniel-juvito/gon/blob/v1.7.0/docs/rfc-field-contracts.md)
+- [Interface semantics (v1.4)](https://github.com/daniel-juvito/gon/blob/v1.7.0/docs/rfc-interface-semantics.md)
+- [Ecosystem contract expansion (v1.5)](https://github.com/daniel-juvito/gon/blob/v1.7.0/docs/rfc-ecosystem-contract-expansion.md)
+- [Type coverage (v1.6)](https://github.com/daniel-juvito/gon/blob/v1.7.0/docs/rfc-type-coverage.md)
+- [Element-contract construction (v1.7)](https://github.com/daniel-juvito/gon/blob/v1.7.0/docs/rfc-element-contract-construction.md)
