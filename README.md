@@ -27,7 +27,7 @@ go install github.com/daniel-juvito/gon/cmd/gon@v1.8.0
 | [`interface-contracts/`](interface-contracts/) | **v1.4** | `!I` is interface-value non-nil only; typed-nil ok, ordinary `I` rejected, embedding does not propagate |
 | [`ecosystem-contracts/`](ecosystem-contracts/) | **v1.5** | external `.gna` `types:` field contracts across the package boundary (construction / mutation / use); interface results; `.gna` validation (GN003 / GW004) |
 | [`type-coverage/`](type-coverage/) | **v1.6** | `!` on slice / map / chan / func / named / alias means the reference value is non-nil; bare `var x !S` needs an initializer (GN002); `x.(!T)` → GN001; `!` on a non-nilable kind → GN003 |
-| [`element-contracts/`](element-contracts/) | **v1.7** | element `!` (`[]!*T`, `map[K]!*V`, `[N]!*T`) is a construction-time obligation: explicit nil element → GN001, fixed-array zero-fill → GN002, element `!` on chan/key/non-nilable → GN003 |
+| [`element-contracts/`](element-contracts/) | **v1.7** | element `!` (`[]!*T`, `[N]!*T`, `map[K]!*V`, `[]!I`) checked at the composite-literal site: nil element → GN001, fixed-array zero-fill → GN002, `!` on chan element / map key / non-nilable kind → GN003; construction-time only |
 | [`generics/`](generics/) | **v1.8** | contracts attach to declaration positions and survive instantiation: `Box[T]{}` → GN002/GN001, `NN[T]()` result is a non-nil source (GW001), `!X` needs a nilable constraint (GN003), `!` in a type argument → GN003 |
 
 ## Quick start
@@ -59,7 +59,7 @@ gon check construction/construction.gon  # GN002 (new/unkeyed/nested), exit 1
 gon check interface-contracts/interface.gon  # GN001 ×6 + GW001, exit 1
 (cd ecosystem-contracts && gon check demo.gon) # GN002/GN001 + GW001, exit 1
 gon check type-coverage/type-coverage.gon  # GN002/GN001/GN003 + GW001, exit 1
-gon check element-contracts/element-contracts.gon  # GN001/GN002/GN003, exit 1
+gon check element-contracts/element-contracts.gon  # 5×GN001 + 3×GN002 + 3×GN003, exit 1
 gon check generics/generics.gon  # GN003/GN002/GN001 + GW001, exit 1
 gon fmt cli/demo.gon && gon check cli/demo.gon  # fmt preserves !; ok
 ```
