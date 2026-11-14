@@ -2,6 +2,7 @@
 *.go
 # ...except real source in module examples
 !ecosystem-contracts/store/store.go
+!generic-gna/cache/cache.go
 /hello/hello
 /reject-nil/reject
 /struct-fields/fields
