@@ -1,0 +1,58 @@
+package main
+
+import "fmt"
+
+type Handler struct{ name string }
+
+func mk() *Handler { return &Handler{name: "h"} }
+
+// A generic struct: the field contract is part of the declaration and
+// survives every instantiation (G3).
+type Box[X any] struct {
+	v !*X
+}
+
+type Registry[K comparable, V any] struct {
+	items !map[K]V
+}
+
+// A result contract resolves through explicit and inferred calls (G5).
+func NN[X any]() !*X { return new(X) }
+func Must[V any](p *V) !*V { return p }
+
+// `!P` is valid because P's constraint restricts it to pointer types (G2).
+func Use[P ~*Handler](p !P) P { return p }
+
+// G2 — `any` does not restrict X to a nilable kind.
+func Bad[X any](x !X) {}
+
+// OK — satisfied at every site.
+func ok() {
+	b := Box[Handler]{v: mk()}
+	r := Registry[string, int]{items: map[string]int{}}
+	m := Must(mk())
+	n := NN[Handler]()
+	fmt.Println(b, r, m, n, Use(mk()))
+}
+
+// G3 — the contract survives instantiation.
+func construct() {
+	_ = Box[Handler]{}            // GN002: missing required non-nil field v
+	_ = Box[Handler]{v: nil}      // GN001
+	var z Box[Handler]            // GN002
+	_ = z
+}
+
+// G5 — a !-result is a non-nil source through the instantiation.
+func source() {
+	p := NN[Handler]()
+	if p == nil { // GW001
+	}
+}
+
+type Plain[X any] struct{ v *X }
+
+// G4 — `!` is not allowed in a type argument.
+var bad Plain[!*Handler] // GN003
+
+func main() { ok(); construct(); source() }
