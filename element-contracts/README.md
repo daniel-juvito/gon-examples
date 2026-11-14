@@ -31,6 +31,6 @@ Shows:
 Not tracked (by design): after construction, `s[i] = nil`, `append`, and map
 assignment are ordinary Go.
 
-Spec: [rfc-element-contract-construction.md](https://github.com/daniel-juvito/gon/blob/v1.7.0/docs/rfc-element-contract-construction.md)
+Spec: [rfc-element-contract-construction.md](https://github.com/daniel-juvito/gon/blob/v1.8.0/docs/rfc-element-contract-construction.md)
 
 Requires Gon **v1.7.0+**.
