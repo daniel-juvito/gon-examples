@@ -9,7 +9,7 @@ Gon adds `!T` type modifiers so you can express non-nil contracts at **vet time*
 ## Install Gon
 
 ```bash
-go install github.com/daniel-juvito/gon/cmd/gon@v1.11.0
+go install github.com/daniel-juvito/gon/cmd/gon@v1.12.0
 ```
 
 ## Examples
@@ -32,6 +32,7 @@ go install github.com/daniel-juvito/gon/cmd/gon@v1.11.0
 | [`generic-gna/`](generic-gna/) | **v1.9** | `.gna` contracts on generic symbols: explicit instantiation resolves like inference, a `!` flag over a nilable type parameter is valid, field contracts survive `pkg.T[K, V]{}`, and an invalid flag (`"!string"`) is GN003 with only that flag dropped |
 | [`package-check/`](package-check/) | **v1.10** | package mode: `gon check <dir>` / `./...` checks a directory's `.gon` files as one package, so a contract declared in one file (`!` parameter, field, result) is enforced in the others; a sibling plain `.go` is loaded as is; `*_test.gon` is skipped; one `--json` document; a single-file check of the same file cannot see the other files |
 | [`method-contracts/`](method-contracts/) | **v1.11** | a `!` on a method's parameter or result is enforced at its callers: direct, promoted through embedding, through an interface, method expression; a `!` result is a non-nil source (GW001); matched by `go/types` identity so two types sharing a method name do not collide; a method value is not tracked |
+| [`transpile-dir/`](transpile-dir/) | **v1.12** | `gon transpile` / `gon build` accept a directory or `./...`: the package is checked as a whole and `.go` is written only if it passes; packages are done after the ones they import, so a tree with no `.go` works; a file alone cannot be transpiled when it uses a sibling |
 
 ## Quick start
 
@@ -66,6 +67,7 @@ gon check element-contracts/element-contracts.gon  # 5×GN001 + 3×GN002 + 3×GN
 gon check generics/generics.gon  # GN003/GN002/GN001 + GW001, exit 1
 (cd generic-gna && gon check demo.gon)  # GN001/GN002/GN003 + GW001, exit 1
 gon check method-contracts/methods.gon  # v1.11: 4×GN001 + GW001 on method calls, exit 1
+(cd transpile-dir && gon transpile ./... && gon build ./cmd/app && ./app)  # v1.12: total: 15
 (cd package-check && gon check billing)  # package mode: cross-file GN001 ×2 + GN002 + GW001, exit 1
 (cd package-check && gon check ./...)    # same; ledger/ is clean
 gon fmt cli/demo.gon && gon check cli/demo.gon  # fmt preserves !; ok
@@ -89,6 +91,7 @@ scripts/check-examples.sh          # uses `gon` from PATH
 - [Gon README](https://github.com/daniel-juvito/gon)
 - [v1 scope](https://github.com/daniel-juvito/gon/blob/v1.9.0/docs/v1-scope.md)
 - [.gna spec](https://github.com/daniel-juvito/gon/blob/v1.9.0/docs/gna-spec-v1.md)
+- [Directory form for transpile / build (v1.12)](https://github.com/daniel-juvito/gon/blob/v1.12.0/docs/rfc-transpile-dir.md)
 - [Method call-site contracts (v1.11)](https://github.com/daniel-juvito/gon/blob/v1.11.0/docs/rfc-method-contracts.md)
 - [Package-aware checking (v1.10)](https://github.com/daniel-juvito/gon/blob/v1.10.0/docs/rfc-package-check.md)
 - [Return-value contracts (v1.1)](https://github.com/daniel-juvito/gon/blob/v1.9.0/docs/rfc-return-value-contracts.md)

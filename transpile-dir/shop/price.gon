@@ -1,0 +1,12 @@
+package shop
+
+const unit = 5
+
+// Total sums the quantities of the items, priced at a flat unit price.
+func Total(items []*Item) int {
+	n := 0
+	for _, it := range items {
+		n += it.Qty * unit
+	}
+	return n
+}
