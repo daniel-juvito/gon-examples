@@ -69,6 +69,19 @@ gon check generics/generics.gon  # GN003/GN002/GN001 + GW001, exit 1
 gon fmt cli/demo.gon && gon check cli/demo.gon  # fmt preserves !; ok
 ```
 
+## CI
+
+`scripts/check-examples.sh` runs `gon check` on every example listed in
+[`expected.txt`](expected.txt) and compares the exit code and the count of each
+diagnostic code (positions are not compared). The workflow installs the pinned
+`gon` version (`GON_VERSION` in `.github/workflows/ci.yml`) and runs it on every
+pull request. When you add or change an example, update its README and its line
+in `expected.txt`; when you bump `GON_VERSION`, re-check both.
+
+```bash
+scripts/check-examples.sh          # uses `gon` from PATH
+```
+
 ## Docs
 
 - [Gon README](https://github.com/daniel-juvito/gon)
