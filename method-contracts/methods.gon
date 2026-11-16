@@ -1,0 +1,38 @@
+package main
+
+type Task struct{}
+
+type Queue struct{}
+
+// A `!` on a method's parameter or result is enforced at its callers (v1.11).
+func (q *Queue) Push(t !*Task) {}
+func (q *Queue) Pop() !*Task   { return &Task{} }
+
+// A call promoted through embedding resolves to the method that declares it.
+type Worker struct{ Queue }
+
+// A call through an interface uses the interface's own `!`.
+type Pusher interface{ Push(t !*Task) }
+
+// Two types may share a method name: each call is matched to its own
+// declaration (by go/types object identity), never by name.
+type Stack struct{}
+
+func (s *Stack) Push(t *Task) {}
+
+func run(q *Queue, w Worker, p Pusher, s *Stack) {
+	q.Push(nil)          // GN001: direct call
+	w.Push(nil)          // GN001: promoted through embedding
+	p.Push(nil)          // GN001: the interface declares the contract
+	(*Queue).Push(q, nil) // GN001: method expression
+	s.Push(nil)          // ok: Stack.Push has no `!`
+
+	t := q.Pop()
+	if t == nil { // GW001: a !-result is a non-nil source
+	}
+
+	push := q.Push
+	push(nil) // not tracked: a method value carries no contract
+}
+
+func main() {}
