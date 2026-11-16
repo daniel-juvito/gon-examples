@@ -1,0 +1,13 @@
+package shop
+
+// Item is declared here and used from price.gon: the two files only make sense
+// together, so they can only be transpiled together.
+type Item struct {
+	Name string
+	Qty  int
+}
+
+// NewItem promises a non-nil result.
+func NewItem(name string, qty int) !*Item {
+	return &Item{Name: name, Qty: qty}
+}

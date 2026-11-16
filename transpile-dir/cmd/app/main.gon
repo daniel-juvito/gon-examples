@@ -1,0 +1,12 @@
+package main
+
+import (
+	"fmt"
+
+	"gonexample.local/transpiledir/shop"
+)
+
+func main() {
+	items := []*shop.Item{shop.NewItem("pen", 2), shop.NewItem("ink", 1)}
+	fmt.Println("total:", shop.Total(items))
+}
