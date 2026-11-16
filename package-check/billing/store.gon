@@ -1,0 +1,11 @@
+package billing
+
+// Save has a non-nil parameter contract. Callers live in other files.
+func Save(o !*Order) string {
+	return Describe(o)
+}
+
+// Lookup promises a non-nil result.
+func Lookup(id int) !*Order {
+	return &Order{ID: id, Customer: &Customer{Name: "walk-in"}}
+}

@@ -1,0 +1,13 @@
+package ledger
+
+type Account struct {
+	Code string
+}
+
+func Open(code string) !*Account {
+	return &Account{Code: code}
+}
+
+func Post(code string, amount int) Entry {
+	return Entry{Account: Open(code), Amount: amount}
+}

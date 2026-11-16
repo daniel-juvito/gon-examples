@@ -1,0 +1,6 @@
+package ledger
+
+type Entry struct {
+	Account !*Account
+	Amount  int
+}

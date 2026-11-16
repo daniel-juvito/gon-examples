@@ -1,0 +1,19 @@
+package billing
+
+// Everything below uses declarations from types.gon and store.gon. A check of
+// this file alone cannot see them; a package check can.
+
+func Run() {
+	Save(nil) // GN001: Save's parameter is declared in store.gon
+
+	o := Order{ID: 1} // GN002: Order.Customer is declared in types.gon
+	_ = o
+
+	ok := Order{ID: 2, Customer: &Customer{Name: "ada"}}
+	ok.Customer = nil // GN001: field contract from types.gon
+
+	found := Lookup(3)
+	if found == nil { // GW001: Lookup's result contract is in store.gon
+		return
+	}
+}
