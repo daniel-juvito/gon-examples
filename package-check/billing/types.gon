@@ -1,0 +1,13 @@
+package billing
+
+// Customer and Order are declared here; their contracts are used in other
+// files of the package.
+type Customer struct {
+	Name string
+}
+
+type Order struct {
+	ID       int
+	Customer !*Customer // required: never nil
+	Note     *string    // ordinary field: nil is fine
+}

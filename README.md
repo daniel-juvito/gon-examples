@@ -9,7 +9,7 @@ Gon adds `!T` type modifiers so you can express non-nil contracts at **vet time*
 ## Install Gon
 
 ```bash
-go install github.com/daniel-juvito/gon/cmd/gon@v1.9.1
+go install github.com/daniel-juvito/gon/cmd/gon@v1.10.0
 ```
 
 ## Examples
@@ -30,6 +30,7 @@ go install github.com/daniel-juvito/gon/cmd/gon@v1.9.1
 | [`element-contracts/`](element-contracts/) | **v1.7** | element `!` (`[]!*T`, `[N]!*T`, `map[K]!*V`, `[]!I`) checked at the composite-literal site: nil element → GN001, fixed-array zero-fill → GN002, `!` on chan element / map key / non-nilable kind → GN003; construction-time only |
 | [`generics/`](generics/) | **v1.8** | contracts attach to declaration positions and survive instantiation: `Box[T]{}` → GN002/GN001, `NN[T]()` result is a non-nil source (GW001), `!X` needs a nilable constraint (GN003), `!` in a type argument → GN003 |
 | [`generic-gna/`](generic-gna/) | **v1.9** | `.gna` contracts on generic symbols: explicit instantiation resolves like inference, a `!` flag over a nilable type parameter is valid, field contracts survive `pkg.T[K, V]{}`, and an invalid flag (`"!string"`) is GN003 with only that flag dropped |
+| [`package-check/`](package-check/) | **v1.10** | package mode: `gon check <dir>` / `./...` checks a directory's `.gon` files as one package, so a contract declared in one file (`!` parameter, field, result) is enforced in the others; a sibling plain `.go` is loaded as is; `*_test.gon` is skipped; one `--json` document; a single-file check of the same file cannot see the other files |
 
 ## Quick start
 
@@ -63,6 +64,8 @@ gon check type-coverage/type-coverage.gon  # GN002/GN001/GN003 + GW001, exit 1
 gon check element-contracts/element-contracts.gon  # 5×GN001 + 3×GN002 + 3×GN003, exit 1
 gon check generics/generics.gon  # GN003/GN002/GN001 + GW001, exit 1
 (cd generic-gna && gon check demo.gon)  # GN001/GN002/GN003 + GW001, exit 1
+(cd package-check && gon check billing)  # package mode: cross-file GN001 ×2 + GN002 + GW001, exit 1
+(cd package-check && gon check ./...)    # same; ledger/ is clean
 gon fmt cli/demo.gon && gon check cli/demo.gon  # fmt preserves !; ok
 ```
 
@@ -71,6 +74,7 @@ gon fmt cli/demo.gon && gon check cli/demo.gon  # fmt preserves !; ok
 - [Gon README](https://github.com/daniel-juvito/gon)
 - [v1 scope](https://github.com/daniel-juvito/gon/blob/v1.9.0/docs/v1-scope.md)
 - [.gna spec](https://github.com/daniel-juvito/gon/blob/v1.9.0/docs/gna-spec-v1.md)
+- [Package-aware checking (v1.10)](https://github.com/daniel-juvito/gon/blob/v1.10.0/docs/rfc-package-check.md)
 - [Return-value contracts (v1.1)](https://github.com/daniel-juvito/gon/blob/v1.9.0/docs/rfc-return-value-contracts.md)
 - [Field contracts (v1.2)](https://github.com/daniel-juvito/gon/blob/v1.9.0/docs/rfc-field-contracts.md)
 - [Interface semantics (v1.4)](https://github.com/daniel-juvito/gon/blob/v1.9.0/docs/rfc-interface-semantics.md)

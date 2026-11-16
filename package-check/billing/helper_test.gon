@@ -1,0 +1,4 @@
+package billing
+
+// *_test.gon files are not part of package mode: this nil is not reported.
+func helper() { Save(nil) }
