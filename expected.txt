@@ -20,6 +20,7 @@ element-contracts   | element-contracts.gon    | 1 | GN001=5 GN002=3 GN003=3
 generics            | generics.gon             | 1 | GN001=1 GN002=2 GN003=2 GW001=1
 generic-gna         | demo.gon                 | 1 | GN001=3 GN002=2 GN003=1 GW001=2
 cli                 | demo.gon                 | 0 |
+source-contracts    | ./app                    | 1 | GN001=1 GN002=1 GW001=1 GW005=1
 return-contracts     | returns.gon              | 1 | GN001=3 GN002=1 GW001=1
 method-contracts    | methods.gon              | 1 | GN001=4 GW001=1
 package-check       | billing                  | 1 | GN001=2 GN002=1 GW001=1

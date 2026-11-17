@@ -9,7 +9,7 @@ Gon adds `!T` type modifiers so you can express non-nil contracts at **vet time*
 ## Install Gon
 
 ```bash
-go install github.com/daniel-juvito/gon/cmd/gon@v1.13.0
+go install github.com/daniel-juvito/gon/cmd/gon@v1.14.0
 ```
 
 ## Examples
@@ -34,6 +34,7 @@ go install github.com/daniel-juvito/gon/cmd/gon@v1.13.0
 | [`method-contracts/`](method-contracts/) | **v1.11** | a `!` on a method's parameter or result is enforced at its callers: direct, promoted through embedding, through an interface, method expression; a `!` result is a non-nil source (GW001); matched by `go/types` identity so two types sharing a method name do not collide; a method value is not tracked |
 | [`transpile-dir/`](transpile-dir/) | **v1.12** | `gon transpile` / `gon build` accept a directory or `./...`: the package is checked as a whole and `.go` is written only if it passes; packages are done after the ones they import, so a tree with no `.go` works; a file alone cannot be transpiled when it uses a sibling |
 | [`return-contracts/`](return-contracts/) | **v1.13** | the operands of a `return` are checked like any other expression (`return Job{Task: nil}`, `return Run(nil)`, `return t == nil`), and a function literal is checked as a function (its own parameters shadow outer ones, its `return` answers to its own `!` result) |
+| [`source-contracts/`](source-contracts/) | **v1.14** | an importer sees the `!` contracts written in another package's `.gon` sources of the same module (no `.gna` to write): GW001 / GN001 / GN002 across the package boundary; a stale `.gna` for that package is ignored (GW005) |
 
 ## Quick start
 
@@ -68,6 +69,7 @@ gon check element-contracts/element-contracts.gon  # 5×GN001 + 3×GN002 + 3×GN
 gon check generics/generics.gon  # GN003/GN002/GN001 + GW001, exit 1
 (cd generic-gna && gon check demo.gon)  # GN001/GN002/GN003 + GW001, exit 1
 gon check method-contracts/methods.gon  # v1.11: 4×GN001 + GW001 on method calls, exit 1
+(cd source-contracts && gon transpile ./lib && gon check ./app)  # v1.14: GW005 + GW001 + GN001 + GN002, exit 1
 gon check return-contracts/returns.gon  # v1.13: 3×GN001 + GN002 + GW001 in return operands, exit 1
 (cd transpile-dir && gon transpile ./... && gon build ./cmd/app && ./app)  # v1.12: total: 15
 (cd package-check && gon check billing)  # package mode: cross-file GN001 ×2 + GN002 + GW001, exit 1
@@ -93,6 +95,7 @@ scripts/check-examples.sh          # uses `gon` from PATH
 - [Gon README](https://github.com/daniel-juvito/gon)
 - [v1 scope](https://github.com/daniel-juvito/gon/blob/v1.9.0/docs/v1-scope.md)
 - [.gna spec](https://github.com/daniel-juvito/gon/blob/v1.9.0/docs/gna-spec-v1.md)
+- [Cross-package contracts from .gon sources (v1.14)](https://github.com/daniel-juvito/gon/blob/v1.14.0/docs/rfc-source-contracts.md)
 - [v1.13 release notes (return operands, function literals)](https://github.com/daniel-juvito/gon/blob/v1.13.0/CHANGELOG.md)
 - [Directory form for transpile / build (v1.12)](https://github.com/daniel-juvito/gon/blob/v1.12.0/docs/rfc-transpile-dir.md)
 - [Method call-site contracts (v1.11)](https://github.com/daniel-juvito/gon/blob/v1.11.0/docs/rfc-method-contracts.md)

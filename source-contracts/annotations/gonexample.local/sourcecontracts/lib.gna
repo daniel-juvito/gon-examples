@@ -1,0 +1,11 @@
+# A stale .gna left over from before v1.14. It claims Get's result is non-nil,
+# which the source does not say. Since lib has .gon sources, this file is
+# ignored (GW005) and the source's contracts apply.
+schema: 1
+package: gonexample.local/sourcecontracts/lib
+methods:
+  Store.Get:
+    params:
+      - "string"
+    results:
+      - "!*Item"

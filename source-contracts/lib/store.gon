@@ -1,0 +1,27 @@
+package lib
+
+// The contracts of this package are written here, in Gon, and nowhere else:
+// since v1.14 a package that imports it sees them, with no .gna to write.
+
+type Item struct {
+	Name string
+}
+
+// Open never returns nil.
+func Open() !*Store { return &Store{items: map[string]*Item{}} }
+
+type Store struct {
+	items map[string]*Item
+}
+
+// Put needs a non-nil item.
+func (s *Store) Put(it !*Item) { s.items[it.Name] = it }
+
+// Get may return nil: an ordinary result.
+func (s *Store) Get(name string) *Item { return s.items[name] }
+
+// Entry has a required field.
+type Entry struct {
+	Item !*Item
+	Note string
+}
