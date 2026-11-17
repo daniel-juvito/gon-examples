@@ -1,0 +1,45 @@
+package main
+
+type Task struct{}
+
+type Job struct {
+	Task !*Task
+}
+
+func Run(t !*Task) int { return 0 }
+
+// Until v1.13 the operands of a return were not checked: every function below
+// returned without a diagnostic, although each one breaks a contract.
+
+func nilField() Job {
+	return Job{Task: nil} // GN001: nil into a required !*Task field
+}
+
+func missingField() Job {
+	return Job{} // GN002: the required field Task is left at zero
+}
+
+func nilArgument() int {
+	return Run(nil) // GN001: nil to a !*Task parameter
+}
+
+func alwaysFalse(t !*Task) bool {
+	return t == nil // GW001: t is non-nil, so the comparison is always false
+}
+
+// A function literal is checked as a function: its own parameters shadow the
+// outer ones, and its return answers to its own result contract.
+
+func shadowed(t !*Task) func(*Task) bool {
+	return func(t *Task) bool {
+		return t == nil // ok: this t is the closure's ordinary parameter
+	}
+}
+
+func closureResult() func() !*Task {
+	return func() !*Task {
+		return nil // GN001: the closure's result is !*Task
+	}
+}
+
+func main() {}
