@@ -1,0 +1,19 @@
+package main
+
+import (
+	"fmt"
+
+	"gonexample.local/sourcecontracts/lib"
+)
+
+func main() {
+	s := lib.Open()
+	if s == nil { // GW001: Open's result is non-nil (contract from lib/store.gon)
+		return
+	}
+	s.Put(nil)         // GN001: Put's parameter is non-nil
+	_ = lib.Entry{}    // GN002: Entry.Item is required
+	if it := s.Get("x"); it == nil { // ok: Get's result is ordinary
+		fmt.Println("missing")
+	}
+}
