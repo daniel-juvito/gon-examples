@@ -9,7 +9,7 @@ Gon adds `!T` type modifiers so you can express non-nil contracts at **vet time*
 ## Install Gon
 
 ```bash
-go install github.com/daniel-juvito/gon/cmd/gon@v1.19.0
+go install github.com/daniel-juvito/gon/cmd/gon@v1.20.0
 ```
 
 ## Examples
@@ -95,6 +95,7 @@ scripts/check-examples.sh          # uses `gon` from PATH
 - [Gon README](https://github.com/daniel-juvito/gon)
 - [v1 scope](https://github.com/daniel-juvito/gon/blob/v1.9.0/docs/v1-scope.md)
 - [.gna spec](https://github.com/daniel-juvito/gon/blob/v1.9.0/docs/gna-spec-v1.md)
+- [Malformed build constraints in file mode, the module context of `gon build <dir>` (v1.20)](https://github.com/daniel-juvito/gon/blob/v1.20.0/CHANGELOG.md)
 - [Malformed build constraints in package mode (v1.19)](https://github.com/daniel-juvito/gon/blob/v1.19.0/CHANGELOG.md)
 - [Module context in file mode, package mode outside a module (v1.17, v1.18)](https://github.com/daniel-juvito/gon/blob/v1.18.0/CHANGELOG.md)
 - [Package discovery follows the go command (v1.16)](https://github.com/daniel-juvito/gon/blob/v1.16.0/CHANGELOG.md)
