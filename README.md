@@ -9,7 +9,7 @@ Gon adds `!T` type modifiers so you can express non-nil contracts at **vet time*
 ## Install Gon
 
 ```bash
-go install github.com/daniel-juvito/gon/cmd/gon@v1.20.0
+go install github.com/daniel-juvito/gon/cmd/gon@v1.21.0
 ```
 
 ## Examples

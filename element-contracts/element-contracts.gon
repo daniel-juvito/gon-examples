@@ -22,7 +22,7 @@ func main() {
 	_ = map[string]!*T{"a": nil} // GN001 — map value
 
 	// ...an ordinary expression is accepted even if it may be nil (C4):
-	_ = []!*T{mk(), maybe()} // OK — maybe() is not the nil literal
+	_ = []!*T{mk(), maybe()} // not GN001 — maybe() is not the nil literal; GW006 warns since v1.21
 
 	// non-nil is not non-empty — an empty element literal is fine:
 	_ = []!*T{}          // OK
