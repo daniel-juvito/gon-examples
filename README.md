@@ -9,7 +9,7 @@ Gon adds `!T` type modifiers so you can express non-nil contracts at **vet time*
 ## Install Gon
 
 ```bash
-go install github.com/daniel-juvito/gon/cmd/gon@v1.21.0
+go install github.com/daniel-juvito/gon/cmd/gon@v1.22.0
 ```
 
 ## Examples
@@ -19,7 +19,7 @@ go install github.com/daniel-juvito/gon/cmd/gon@v1.21.0
 | [`hello/`](hello/) | v1.0 | `!T` params, returns, and required struct fields |
 | [`reject-nil/`](reject-nil/) | v1.0 | GN001 when literal `nil` is passed to `!T` |
 | [`struct-fields/`](struct-fields/) | v1.0 | GN002 when a required `!T` field is missing |
-| [`flow-ok/`](flow-ok/) | v1.0 | Non-literal assignment is allowed (not flow-sensitive) |
+| [`flow-ok/`](flow-ok/) | v1.0, **v1.22** | Not flow-sensitive: an ordinary value into a `!T` slot is GN001 since v1.22 (a warning in v1.21), and `(!T)(x)` is the claim |
 | [`return-value/`](return-value/) | **v1.1** | Annotated `!T` result is a non-nil source (GW001); local multi-return |
 | [`field-contracts/`](field-contracts/) | **v1.2** | Field invariant: construction, mutation, selector; indirection stops |
 | [`construction/`](construction/) | **v1.3** | `new(T)`, unkeyed local literals, nested walk; stop at indirection |
@@ -58,7 +58,7 @@ Negative / feature examples:
 ```bash
 gon check reject-nil/reject.gon           # GN001, exit 1
 gon check struct-fields/fields.gon        # GN001 + GN002, exit 1
-gon check flow-ok/flow.gon                # ok — non-guarantee of v1
+gon check flow-ok/flow.gon                # exit 1 — an ordinary value into a !T slot (GN001)
 gon check return-value/return.gon         # GW001 warnings, exit 0
 gon check field-contracts/fields.gon      # GN002 + GN001 + GW001, exit 1
 gon check construction/construction.gon  # GN002 (new/unkeyed/nested), exit 1

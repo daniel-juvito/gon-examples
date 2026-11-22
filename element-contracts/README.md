@@ -19,8 +19,9 @@ Shows:
 
 - **E4** — an explicitly written `nil` element or map value under an element
   `!` is **GN001** (`[]!*T{mk(), nil}`, `map[string]!*T{"a": nil}`). An
-  ordinary expression is not GN001 even if it might be nil at runtime
-  (`maybe()` — same as Type Coverage C4); since v1.21 it is the warning GW006. Non-nil is not
+  ordinary expression that might be nil at runtime (`maybe()`) is **GN001** since
+  v1.22 (it was accepted until v1.20, and the warning GW006 in v1.21); write
+  `(!*T)(maybe())` to claim it. Non-nil is not
   non-empty: `[]!*T{}` and `map[string]!*T{}` are fine.
 - **E5** — a **fixed-array** literal that leaves one or more indices at their
   zero value is **GN002** — one per literal. Coverage is by *index*: an
