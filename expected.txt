@@ -9,16 +9,16 @@
 hello               | hello.gon                | 0 |
 reject-nil          | reject.gon               | 1 | GN001=1
 struct-fields       | fields.gon               | 1 | GN001=1 GN002=1
-flow-ok             | flow.gon                 | 0 | GW006=1
+flow-ok             | flow.gon                 | 1 | GN001=1
 return-value        | return.gon               | 0 | GW001=2
-field-contracts     | fields.gon               | 1 | GN001=1 GN002=4 GW001=1 GW006=2
+field-contracts     | fields.gon               | 1 | GN001=3 GN002=4 GW001=1
 construction        | construction.gon         | 1 | GN002=4
 interface-contracts | interface.gon            | 1 | GN001=6 GW001=1
-ecosystem-contracts | demo.gon                 | 1 | GN001=3 GN002=8 GW001=3 GW006=6
-type-coverage       | type-coverage.gon        | 1 | GN001=3 GN002=5 GN003=1 GW001=2 GW006=1
-element-contracts   | element-contracts.gon    | 1 | GN001=5 GN002=3 GN003=3 GW006=1
-generics            | generics.gon             | 1 | GN001=1 GN002=2 GN003=2 GW001=1 GW006=1
-generic-gna         | demo.gon                 | 1 | GN001=3 GN002=2 GN003=1 GW001=2 GW006=2
+ecosystem-contracts | demo.gon                 | 1 | GN001=9 GN002=8 GW001=3
+type-coverage       | type-coverage.gon        | 1 | GN001=4 GN002=5 GN003=1 GW001=2
+element-contracts   | element-contracts.gon    | 1 | GN001=6 GN002=3 GN003=3
+generics            | generics.gon             | 1 | GN001=2 GN002=2 GN003=2 GW001=1
+generic-gna         | demo.gon                 | 1 | GN001=5 GN002=2 GN003=1 GW001=2
 cli                 | demo.gon                 | 0 |
 source-contracts    | ./app                    | 1 | GN001=1 GN002=1 GW001=1 GW005=1
 return-contracts     | returns.gon              | 1 | GN001=3 GN002=1 GW001=1

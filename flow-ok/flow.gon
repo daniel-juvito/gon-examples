@@ -1,12 +1,14 @@
-// flow-ok — Gon is not flow-sensitive: a non-literal assignment is not an error.
-// Since v1.21 an ordinary *string into a !*string slot is a warning (GW006, exit 0).
+// flow-ok — Gon is not flow-sensitive, so it never takes an ordinary value to be
+// non-nil: since v1.22 it is GN001, and the author makes the claim with (!T)(x).
+// (Until v1.20 this was accepted silently, and in v1.21 it was the warning GW006.)
 package main
 
 func get() *string {
-	return nil // runtime nil is fine; Gon does not track it
+	return nil // runtime nil is possible; Gon does not track it
 }
 
 func main() {
-	var x !*string = get() // not an error; GW006 warns since v1.21 (use (!*string)(get()) to claim non-nil)
-	_ = x
+	var x !*string = get()            // GN001 — an ordinary *string into a !*string slot
+	var y !*string = (!*string)(get()) // ok — the explicit claim; no run-time check
+	_, _ = x, y
 }
