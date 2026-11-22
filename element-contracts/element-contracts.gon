@@ -9,7 +9,7 @@ type T struct{}
 
 type Handler interface{ Serve() }
 
-func mk() *T    { return &T{} }
+func mk() !*T    { return &T{} }
 func maybe() *T { return nil } // ordinary — the value may be nil
 
 // NewHandlers: the slice itself is non-nil (outer `!`) and every written

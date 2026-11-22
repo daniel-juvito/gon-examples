@@ -4,7 +4,7 @@ import "fmt"
 
 type Handler struct{ name string }
 
-func mk() *Handler { return &Handler{name: "h"} }
+func mk() !*Handler { return &Handler{name: "h"} }
 
 // A generic struct: the field contract is part of the declaration and
 // survives every instantiation (G3).
