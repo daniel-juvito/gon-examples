@@ -1,4 +1,5 @@
-// flow-ok — v1 is not flow-sensitive: non-literal assignment is allowed.
+// flow-ok — Gon is not flow-sensitive: a non-literal assignment is not an error.
+// Since v1.21 an ordinary *string into a !*string slot is a warning (GW006, exit 0).
 package main
 
 func get() *string {
@@ -6,6 +7,6 @@ func get() *string {
 }
 
 func main() {
-	var x !*string = get() // allowed in v1.0 — not a diagnostic
+	var x !*string = get() // not an error; GW006 warns since v1.21 (use (!*string)(get()) to claim non-nil)
 	_ = x
 }
