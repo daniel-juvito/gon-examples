@@ -9,7 +9,7 @@ on:
 env:
   # The gon version the examples and expected.txt are pinned to. Bump it on
   # purpose, together with the READMEs and expected.txt.
-  GON_VERSION: v1.22.0
+  GON_VERSION: v1.23.0
 
 jobs:
   examples:
@@ -20,7 +20,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          # gon v1.22.0 requires Go >= 1.27.0.
+          # gon v1.23.0 requires Go >= 1.27.0.
           go-version: '1.27.0'
 
       - name: Install gon
