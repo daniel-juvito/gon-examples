@@ -18,10 +18,10 @@ func DefaultHandlers() ![]Handler { return []Handler{} }
 
 func main() {
 	// --- C5: a bare `var x !S` of a nilable kind has no initializer ---
-	var s ![]byte             // GN002 — zero value of ![]byte is nil
-	var m !map[string]int     // GN002
-	var fn !Handler           // GN002 — named func type
-	var b !Bytes              // GN002 — alias follows []byte
+	var s ![]byte         // GN002 — zero value of ![]byte is nil
+	var m !map[string]int // GN002
+	var fn !Handler       // GN002 — named func type
+	var b !Bytes          // GN002 — alias follows []byte
 	_, _, _, _ = s, m, fn, b
 
 	// ...with a non-nil initializer, accepted (empty is fine — C2):
@@ -39,16 +39,17 @@ func main() {
 	if hs == nil { // GW001 — always false
 	}
 
-	// --- C6: append / reslice / conversion do not propagate ! ---
+	// --- C6 (v1.26): append with an element and a reslice of a ! slice are non-nil
+	// sources, so `grown` is bound ! (a conversion would not carry the contract) ---
 	grown := append(hs, func() {})
-	if grown == nil { // no GW001 — `grown` is an ordinary slice
+	if grown == nil { // GW001 — appending an element never gives nil
 	}
 
 	// --- C11: a ! reference field — construction, mutation, use ---
-	_ = Registry{}                                   // GN002 — routes is nil
-	r := Registry{routes: map[string]Handler{}}      // OK
-	r.routes = nil                                   // GN001
-	if r.routes == nil {                             // GW001 — selector is a source
+	_ = Registry{}                              // GN002 — routes is nil
+	r := Registry{routes: map[string]Handler{}} // OK
+	r.routes = nil                              // GN001
+	if r.routes == nil {                        // GW001 — selector is a source
 	}
 
 	// --- C7: `!` on any type-assertion target is rejected ---
