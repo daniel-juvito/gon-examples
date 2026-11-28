@@ -39,9 +39,10 @@ func main() {
 	if hs == nil { // GW001 — always false
 	}
 
-	// --- C6: append / reslice / conversion do not propagate ! ---
+	// --- C6 (v1.26): append with an element and a reslice of a ! slice are non-nil
+	// sources, so `grown` is bound ! (a conversion would not carry the contract) ---
 	grown := append(hs, func() {})
-	if grown == nil { // no GW001 — `grown` is an ordinary slice
+	if grown == nil { // GW001 — appending an element never gives nil
 	}
 
 	// --- C11: a ! reference field — construction, mutation, use ---

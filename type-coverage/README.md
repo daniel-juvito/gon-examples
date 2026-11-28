@@ -12,7 +12,7 @@ gon check type-coverage.gon
 # type-coverage.gon:…: error GN002: non-nil variable s declared without an initializer; …
 # type-coverage.gon:…: error GN001: cannot assign nil to non-nil type ![]byte
 # type-coverage.gon:…: warning GW001: hs is non-nil; comparison with nil is always false
-# exit 1  (9 errors: 5×GN002, 3×GN001, 1×GN003 — plus 2×GW001)
+# exit 1  (9 errors: 5×GN002, 3×GN001, 1×GN003 — plus 3×GW001)
 ```
 
 Shows:
@@ -28,8 +28,10 @@ Shows:
 - **C3** — the `nil` literal never satisfies a `!` reference contract → **GN001**.
 - **C8** — an annotated `![]T` **result** is a non-nil source at the call
   site (`hs == nil` → **GW001**).
-- **C6** — `append`, reslice, and conversion produce ordinary values; the
-  `!` contract is **not** carried onto them (`grown == nil` → *no* GW001).
+- **C6** — since **v1.26** `append` with an element and a reslice of a `!` slice
+  are non-nil sources: `grown := append(hs, f)` binds `grown` `!` and
+  `grown == nil` → **GW001**. (Before v1.26 they produced ordinary values.) A
+  conversion still does not carry the contract.
 - **C11** — a `![]T` / `!map` / `!func` **field** is an invariant of its
   storage: zero construction → **GN002**, `f = nil` → **GN001**, the
   selector is a non-nil source → **GW001**.
