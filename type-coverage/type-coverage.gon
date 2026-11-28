@@ -18,10 +18,10 @@ func DefaultHandlers() ![]Handler { return []Handler{} }
 
 func main() {
 	// --- C5: a bare `var x !S` of a nilable kind has no initializer ---
-	var s ![]byte         // GN002 — zero value of ![]byte is nil
-	var m !map[string]int // GN002
-	var fn !Handler       // GN002 — named func type
-	var b !Bytes          // GN002 — alias follows []byte
+	var s ![]byte             // GN002 — zero value of ![]byte is nil
+	var m !map[string]int     // GN002
+	var fn !Handler           // GN002 — named func type
+	var b !Bytes              // GN002 — alias follows []byte
 	_, _, _, _ = s, m, fn, b
 
 	// ...with a non-nil initializer, accepted (empty is fine — C2):
@@ -46,10 +46,10 @@ func main() {
 	}
 
 	// --- C11: a ! reference field — construction, mutation, use ---
-	_ = Registry{}                              // GN002 — routes is nil
-	r := Registry{routes: map[string]Handler{}} // OK
-	r.routes = nil                              // GN001
-	if r.routes == nil {                        // GW001 — selector is a source
+	_ = Registry{}                                   // GN002 — routes is nil
+	r := Registry{routes: map[string]Handler{}}      // OK
+	r.routes = nil                                   // GN001
+	if r.routes == nil {                             // GW001 — selector is a source
 	}
 
 	// --- C7: `!` on any type-assertion target is rejected ---
